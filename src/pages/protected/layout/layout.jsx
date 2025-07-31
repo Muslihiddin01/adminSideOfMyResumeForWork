@@ -44,12 +44,12 @@ const Layout = () => {
       <main className="flex flex-col md:flex-row ">
         <aside
           className={`${
-            isAsideOpen ? "md:w-[20%] w-full" : "w-[0px]"
+            isAsideOpen ? "md:w-[20%] w-full" : "w-[100px]"
           } bg-[#1C2536] text-white  transition-all  duration-1000 relative`}
         >
           <Switch
             className={`absolute top-1 p-1 !transition-all !duration-900  ${
-              isAsideOpen ? " -right-[80%]" : "right-0"
+              isAsideOpen ? " -right-[80%]" : "-right-10"
             }`}
             onClick={() => setIsAsideOpen(!isAsideOpen)}
             defaultChecked
@@ -87,7 +87,8 @@ const Layout = () => {
               {isAsideOpen && <h4>Orders</h4>}
             </Link>
 
-            <div
+            <Link
+              to={"/products"}
               onClick={() => setActive("products")}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "products"
@@ -97,7 +98,7 @@ const Layout = () => {
             >
               <HiLightningBolt className="text-xl" />
               {isAsideOpen && <h4>Products</h4>}
-            </div>
+            </Link>
 
             <div
               onClick={() => setActive("other")}
@@ -113,7 +114,7 @@ const Layout = () => {
           </div>
         </aside>
 
-        <section className="flex-1 py-5 pl-5">
+        <section className="flex-1 py-3 pl-3 ">
           <Outlet />
         </section>
       </main>

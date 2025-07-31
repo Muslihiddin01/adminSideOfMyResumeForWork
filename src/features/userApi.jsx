@@ -11,7 +11,10 @@ export const userApi = createApi({
         body,
       }),
     }),
+    getProducts: builder.query({
+      query: () => "Product/get-products",
+    }),
   }),
 });
 
-export const { useLoginAdminMutation } = userApi;
+export const { useLoginAdminMutation, useGetProductsQuery } = userApi;

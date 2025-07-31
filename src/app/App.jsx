@@ -4,6 +4,7 @@ import Layout from "../pages/protected/layout/layout";
 import Home from "../pages/protected/home/home";
 import Login from "../pages/auth/login/login";
 import Orders from "../pages/protected/orders/orders";
+import Products from "../pages/protected/products/products";
 const App = () => {
   const isAuthenticated = () => {
     return !!localStorage.getItem("access_token");
@@ -26,6 +27,7 @@ const App = () => {
         >
           <Route index element={<Home />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="/products" element={<Products />} />
         </Route>
       </Routes>
     </>
