@@ -3,19 +3,27 @@ import logo from "../../../shared/images/logo.png";
 import { useLoginAdminMutation } from "../../../features/userApi";
 import { useNavigate } from "react-router";
 const Login = () => {
-  let navigate = useNavigate();
+  let [username, setUsername] = useState("");
+  let [password, setPassword] = useState("");
   const [loginAdmin] = useLoginAdminMutation();
-  let [inpAddName, setInpAddName] = useState("");
-  let [inpAddPassword, setInpAddPassword] = useState("");
+  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      await loginAdmin({ userName: inpAddName, password: inpAddPassword });
-      localStorage.setItem("access_token", inpAddName);
+      const response = await loginAdmin({ username, password }).unwrap();
+      const token = response.data;
+      if (!token) {
+        console.error("Token not found in response:", response);
+        return;
+      }
+
+      localStorage.setItem("token", token);
+      console.log("Token saved:", token);
+      console.log("Login successful!");
       navigate("/");
     } catch (error) {
-      console.error(error);
+      console.error("Login failed:", error);
     }
   }
   return (
@@ -28,15 +36,15 @@ const Login = () => {
         <h2 className="text-2xl font-bold">Log in</h2>
         <form className="flex flex-col gap-3 mt-5" onSubmit={handleLogin}>
           <input
-            value={inpAddName}
-            onChange={(e) => setInpAddName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             type="text"
             placeholder="Name"
             className="placeholder:text-inherit p-4 border-1 border-gray-300 rounded hover:border-blue-500 transition-colors delay-75 outline-blue-500"
           />
           <input
-            value={inpAddPassword}
-            onChange={(e) => setInpAddPassword(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
             className="placeholder:text-inherit p-4 border-1 border-gray-300 rounded hover:border-blue-500 transition-colors delay-75 outline-blue-500"
