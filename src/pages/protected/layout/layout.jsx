@@ -9,7 +9,7 @@ import logo from "../../../shared/images/logo.png";
 import { Switch } from "antd";
 
 const Layout = () => {
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState("");
   const [isAsideOpen, setIsAsideOpen] = useState(true);
 
   const onChange = (checked) => {
@@ -114,7 +114,7 @@ const Layout = () => {
           </div>
         </aside>
 
-        <section className="flex-1 py-3 pl-3 ">
+        <section className="flex-1 pt-5 pl-5 ">
           <Outlet />
         </section>
       </main>
