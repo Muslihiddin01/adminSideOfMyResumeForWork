@@ -114,20 +114,20 @@ const AddProducts = () => {
                   onChange={(e) => setInpAddProductName(e.target.value)}
                   type="text"
                   placeholder="Product name"
-                  className="p-3 border border-gray-300 rounded w-[68%]"
+                  className="p-3 border border-gray-300 outline-none rounded w-[68%]"
                 />
                 <input
                   value={inpAddCode}
                   onChange={(e) => setInpAddCode(e.target.value)}
                   type="text"
                   placeholder="Code"
-                  className="p-3 border border-gray-300 rounded w-[31%]"
+                  className="p-3 border border-gray-300 outline-none rounded w-[31%]"
                 />
               </div>
             </article>
 
             <article className="flex flex-col">
-              <div className="flex items-center gap-20 p-3 border border-gray-300 rounded-t">
+              <div className="flex items-center gap-20 p-3 border border-gray-300 outline-none rounded-t">
                 <p>Normal</p>
                 <div className="flex items-center text-xl gap-4 font-bold font-mono">
                   <p>B</p> <p>I</p> <p className="underline">U</p>{" "}
@@ -141,7 +141,7 @@ const AddProducts = () => {
                 placeholder="Description"
                 value={inpAddDescription}
                 onChange={(e) => setInpAddDescription(e.target.value)}
-                className="border border-gray-300 p-3 min-h-[100px] max-h-[200px] rounded-b"
+                className="border border-gray-300 outline-none p-3 min-h-[100px] max-h-[200px] rounded-b"
               ></textarea>
             </article>
           </section>
@@ -181,25 +181,25 @@ const AddProducts = () => {
           <h3 className="font-bold text-lg mt-5">Price</h3>
           <section className="grid grid-cols-3 gap-5">
             <input
-              value={inpAddPrice}
+              value={inpAddPrice <= 0 ? "" : inpAddPrice}
               onChange={(e) => setInpAddPrice(e.target.value)}
               type="number"
               placeholder="Product price"
-              className="p-3 border border-gray-300 rounded"
+              className="p-3 border border-gray-300 outline-none rounded"
             />
             <input
-              value={inpAddDiscountPrice}
+              value={inpAddDiscountPrice <= 0 ? "" : inpAddDiscountPrice}
               onChange={(e) => setInpAddDiscountPrice(e.target.value)}
               type="number"
               placeholder="Discount"
-              className="p-3 border border-gray-300 rounded"
+              className="p-3 border border-gray-300 outline-none rounded"
             />
             <input
-              value={inpAddQuantity}
+              value={inpAddQuantity <= 0 ? "" : inpAddQuantity}
               onChange={(e) => setInpAddQuantity(e.target.value)}
               type="number"
               placeholder="Count"
-              className="p-3 border border-gray-300 rounded"
+              className="p-3 border border-gray-300 outline-none rounded"
             />
           </section>
 
@@ -212,7 +212,7 @@ const AddProducts = () => {
             <p>Add tax for this product</p>
           </div>
 
-          <article className="flex items-center justify-between mt-3 p-3 rounded border border-gray-300">
+          <article className="flex items-center justify-between mt-3 p-3 rounded border border-gray-300 outline-none">
             <aside>
               <p className="font-semibold">Different Options</p>
               <p className="text-gray-600">This product has multiple options</p>
@@ -222,25 +222,25 @@ const AddProducts = () => {
 
           <h3 className="font-bold text-lg mt-5">Options</h3>
           <section className="grid grid-cols-2 gap-5">
-            <fieldset className="border border-gray-300 py-3 px-4 rounded">
+            <fieldset className="border border-gray-300 outline-none py-3 px-4 rounded">
               <legend className="text-gray-600">Option 1</legend>
               <h4 className="text-lg font-semibold">Size</h4>
             </fieldset>
-            <fieldset className="border border-gray-300 py-3 px-4 rounded">
+            <fieldset className="border border-gray-300 outline-none py-3 px-4 rounded">
               <legend className="text-gray-600">Value</legend>
             </fieldset>
-            <fieldset className="border border-gray-300 py-3 px-4 rounded">
+            <fieldset className="border border-gray-300 outline-none py-3 px-4 rounded">
               <legend className="text-gray-600">Option 2</legend>
               <h4 className="text-lg font-semibold">Weight</h4>
             </fieldset>
-            <fieldset className="border border-gray-300 py-3 px-4 rounded">
+            <fieldset className="border border-gray-300 outline-none py-3 px-4 rounded">
               <legend className="text-gray-600">Value</legend>
             </fieldset>
           </section>
         </aside>
 
         <aside className="md:w-[40%] flex flex-col">
-          <section className="p-3 rounded border border-gray-300 flex flex-col">
+          <section className="p-3 rounded border border-gray-300 outline-none flex flex-col">
             <article className="flex gap-5 justify-between">
               <h3 className="font-bold text-lg">Colour:</h3>
               <div className="flex items-center gap-1 font-semibold text-blue-600">
@@ -268,7 +268,7 @@ const AddProducts = () => {
 
           <section>
             <h3 className="font-bold text-lg mt-5">Images</h3>
-            <article className="p-10 border-dashed border border-gray-300 flex items-center justify-center mt-3">
+            <article className="p-10 border-dashed border border-gray-300 outline-none flex items-center justify-center mt-3">
               <input
                 type="file"
                 className="underline"
