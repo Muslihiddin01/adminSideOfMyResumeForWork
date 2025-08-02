@@ -6,6 +6,9 @@ import Login from "../pages/auth/login/login";
 import Orders from "../pages/protected/orders/orders";
 import Products from "../pages/protected/products/products";
 import AddProducts from "../pages/protected/addProducts/addProducts";
+import OtherCategory from "../pages/protected/others/otherCategory";
+import OtherBrands from "../pages/protected/others/othersBrands";
+import OtherSubcategory from "../pages/protected/others/otherSubcategory";
 const App = () => {
   const isAuthenticated = () => {
     return !!localStorage.getItem("access_token");
@@ -30,6 +33,9 @@ const App = () => {
           <Route path="/orders" element={<Orders />} />
           <Route path="/products" element={<Products />} />
           <Route path="/addProducts" element={<AddProducts />} />
+          <Route path="/otherCategory" element={<OtherCategory />} />
+          <Route path="/otherBrands" element={<OtherBrands />} />
+          <Route path="/otherSubcategory" element={<OtherSubcategory />} />
         </Route>
       </Routes>
     </>

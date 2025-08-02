@@ -100,7 +100,8 @@ const Layout = () => {
               {isAsideOpen && <h4>Products</h4>}
             </Link>
 
-            <div
+            <Link
+              to={"/otherCategory"}
               onClick={() => setActive("other")}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "other"
@@ -110,7 +111,7 @@ const Layout = () => {
             >
               <FaRegFolder className="text-xl" />
               {isAsideOpen && <h4>Other</h4>}
-            </div>
+            </Link>
           </div>
         </aside>
 

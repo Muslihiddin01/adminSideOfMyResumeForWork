@@ -68,6 +68,62 @@ export const userApi = createApi({
         method: "PUT",
       }),
     }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `Category/delete-category?id=${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addCategory: builder.mutation({
+      query: (form) => ({
+        url: "Category/add-category",
+        method: "POST",
+        body: form,
+      }),
+    }),
+    editCategory: builder.mutation({
+      query: (form) => ({
+        url: "Category/update-category",
+        method: "PUT",
+        body: form,
+      }),
+    }),
+    deleteBrand: builder.mutation({
+      query: (id) => ({
+        url: `Brand/delete-brand?id=${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addBrand: builder.mutation({
+      query: (brandName) => ({
+        url: `Brand/add-brand?BrandName=${brandName}`,
+        method: "POST",
+      }),
+    }),
+    editBrand: builder.mutation({
+      query: ({ Id, BrandName }) => ({
+        url: `Brand/update-brand?Id=${Id}&BrandName=${BrandName}`,
+        method: "PUT",
+      }),
+    }),
+    deleteSubcategory: builder.mutation({
+      query: (id) => ({
+        url: `SubCategory/delete-sub-category?id=${id}`,
+        method: "DELETE",
+      }),
+    }),
+    addSubcategory: builder.mutation({
+      query: ({ CategoryId, SubCategoryName }) => ({
+        url: `SubCategory/add-sub-category?CategoryId=${CategoryId}&SubCategoryName=${SubCategoryName}`,
+        method: "POST",
+      }),
+    }),
+    editSubcategory: builder.mutation({
+      query: ({ Id, CategoryId, SubCategoryName }) => ({
+        url: `SubCategory/update-sub-category?Id=${Id}&CategoryId=${CategoryId}&SubCategoryName=${SubCategoryName}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -81,4 +137,13 @@ export const {
   useAddProductMutation,
   useDeleteProductMutation,
   useEditProductMutation,
+  useDeleteCategoryMutation,
+  useAddCategoryMutation,
+  useEditCategoryMutation,
+  useDeleteBrandMutation,
+  useAddBrandMutation,
+  useEditBrandMutation,
+  useDeleteSubcategoryMutation,
+  useAddSubcategoryMutation,
+  useEditSubcategoryMutation,
 } = userApi;
