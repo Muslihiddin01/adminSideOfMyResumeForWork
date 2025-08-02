@@ -42,6 +42,32 @@ export const userApi = createApi({
         body: product,
       }),
     }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `Product/delete-product?id=${id}`,
+        method: "DELETE",
+      }),
+    }),
+    editProduct: builder.mutation({
+      query: ({
+        Id,
+        BrandId,
+        ColorId,
+        ProductName,
+        Description,
+        Quantity,
+        Weight,
+        Size,
+        Code,
+        Price,
+        HasDiscount,
+        DiscountPrice,
+        SubCategoryId,
+      }) => ({
+        url: `Product/update-product?Id=${Id}&BrandId=${BrandId}&ColorId=${ColorId}&ProductName=${ProductName}&Description=${Description}&Quantity=${Quantity}&Weight=${Weight}&Size=${Size}&Code=${Code}&Price=${Price}&HasDiscount=${HasDiscount}&DiscountPrice=${DiscountPrice}&SubCategoryId=${SubCategoryId}`,
+        method: "PUT",
+      }),
+    }),
   }),
 });
 
@@ -53,4 +79,6 @@ export const {
   useGetSubcategoriesQuery,
   useGetBrandsQuery,
   useAddProductMutation,
+  useDeleteProductMutation,
+  useEditProductMutation,
 } = userApi;

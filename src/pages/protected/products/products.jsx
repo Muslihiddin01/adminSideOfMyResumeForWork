@@ -1,13 +1,107 @@
-import React from "react";
-import { useGetProductsQuery } from "../../../features/userApi";
+import React, { useState } from "react";
+import {
+  useDeleteProductMutation,
+  useEditProductMutation,
+  useGetBrandsQuery,
+  useGetColorsQuery,
+  useGetProductsQuery,
+  useGetSubcategoriesQuery,
+} from "../../../features/userApi";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Checkbox, Flex, Spin } from "antd";
+import { Checkbox, Flex, Spin, Modal, Select } from "antd";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Link } from "react-router";
 const Products = () => {
-  const { data, isLoading, isError } = useGetProductsQuery();
+  const { data, isLoading, isError, refetch } = useGetProductsQuery();
   const product = data?.data?.products;
+  const { Option } = Select;
+
+  const { data: brands } = useGetBrandsQuery();
+  let brand = brands?.data;
+
+  const { data: color } = useGetColorsQuery();
+  let colors = color?.data;
+
+  const [deleteProduct] = useDeleteProductMutation();
+
+  async function removeProduct(id) {
+    try {
+      await deleteProduct(id);
+      refetch();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  let [inpEditBrand, setInpEditBrand] = useState(null);
+  let [inpEditColor, setInpEditColor] = useState(null);
+  let [inpEditProductName, setInpEditProductName] = useState("");
+  let [inpEditDescription, setInpEditDescription] = useState("");
+  let [inpEditQuantity, setInpEditQuantity] = useState("");
+  let [inpEditSize, setInpEditSize] = useState("");
+  let [inpEditWeight, setInpEditWeight] = useState("");
+  let [inpEditCode, setInpEditCode] = useState("");
+  let [inpEditPrice, setInpEditPrice] = useState("");
+  let [inpEditHasDiscount, setInpEditHasDiscount] = useState(false);
+  let [inpEditDiscountPrice, setInpEditDiscountPrice] = useState("");
+  let [inpEditSubCategoryId, setInpEditSubCategoryId] = useState(null);
+  let [idx, setIdx] = useState(null);
+
+  // edit
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
+  const { data: subcategories } = useGetSubcategoriesQuery();
+  let subcategory = subcategories?.data;
+
+  const [edit] = useEditProductMutation();
+
+  function openEditDialog(e) {
+    setInpEditBrand(e.brandId);
+    setInpEditColor(e.colorId);
+    setInpEditProductName(e.productName);
+    setInpEditDescription(e.description);
+    setInpEditQuantity(e.quantity);
+    setInpEditSize(e.size);
+    setInpEditWeight(e.weight);
+    setInpEditCode(e.code);
+    setInpEditPrice(e.price);
+    setInpEditHasDiscount(e.hasDiscount);
+    setInpEditDiscountPrice(e.discountPrice);
+    setInpEditSubCategoryId(e.subCategoryId);
+    setIdx(e.id);
+    setIsModalOpen(true);
+  }
+
+  async function editProduct(e) {
+    e.preventDefault();
+    try {
+      await edit({
+        Id: idx,
+        BrandId: inpEditBrand,
+        ColorId: inpEditColor,
+        ProductName: inpEditProductName,
+        Description: inpEditDescription,
+        Quantity: inpEditQuantity,
+        Weight: inpEditWeight,
+        Size: inpEditSize,
+        Code: inpEditCode,
+        Price: inpEditPrice,
+        HasDiscount: inpEditHasDiscount,
+        DiscountPrice: inpEditDiscountPrice,
+        SubCategoryId: inpEditSubCategoryId,
+      });
+      refetch();
+      setIsModalOpen(false)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   if (isLoading)
     return (
       <Flex className="flex items-center justify-center h-[90vh]">
@@ -96,6 +190,125 @@ const Products = () => {
         </div>
       </section>
 
+      <Modal
+        title="Edit Product"
+        closable={{ "aria-label": "Custom Close Button" }}
+        open={isModalOpen}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+      >
+        <form className="grid grid-cols-2 gap-5" onSubmit={editProduct}>
+          <Select
+            placeholder="Brands"
+            allowClear
+            value={inpEditBrand}
+            onChange={(value) => setInpEditBrand(value)}
+          >
+            {brand
+              ? brand.map((e) => (
+                  <Option key={e.id} value={e.id}>
+                    {e.brandName}
+                  </Option>
+                ))
+              : null}
+          </Select>
+          <Select
+            placeholder="Select Color"
+            allowClear
+            value={inpEditColor}
+            onChange={(value) => setInpEditColor(value)}
+          >
+            {colors
+              ? colors.map((color) => (
+                  <Option key={color.id} value={color.id}>
+                    {color.colorName}
+                  </Option>
+                ))
+              : null}
+          </Select>
+          <input
+            value={inpEditProductName}
+            onChange={(e) => setInpEditProductName(e.target.value)}
+            type="text"
+            placeholder="Product Name"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditDescription}
+            onChange={(e) => setInpEditDescription(e.target.value)}
+            type="text"
+            placeholder="Description"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditQuantity}
+            onChange={(e) => setInpEditQuantity(e.target.value)}
+            type="number"
+            placeholder="Quantity"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditSize}
+            onChange={(e) => setInpEditSize(e.target.value)}
+            type="text"
+            placeholder="Size"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditWeight}
+            onChange={(e) => setInpEditWeight(e.target.value)}
+            type="text"
+            placeholder="Weight"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditCode}
+            onChange={(e) => setInpEditCode(e.target.value)}
+            type="text"
+            placeholder="Product Code"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <input
+            value={inpEditPrice}
+            onChange={(e) => setInpEditPrice(e.target.value)}
+            type="number"
+            placeholder="Price"
+            className="p-2 border border-gray-300 rounded outline-none"
+          />
+          <label className="flex items-center gap-2 col-span-2">
+            <Checkbox
+              checked={inpEditHasDiscount}
+              onChange={(e) => setInpEditHasDiscount(e.target.checked)}
+            />
+            Has Discount
+          </label>
+          {inpEditHasDiscount && (
+            <input
+              value={inpEditDiscountPrice}
+              onChange={(e) => setInpEditDiscountPrice(e.target.value)}
+              type="number"
+              placeholder="Discount Price"
+              className="p-2 border border-gray-300 rounded outline-none"
+            />
+          )}
+          <Select
+            placeholder="Subcategories"
+            allowClear
+            value={inpEditSubCategoryId}
+            onChange={(value) => setInpEditSubCategoryId(value)}
+          >
+            {subcategory
+              ? subcategory.map((e) => (
+                  <Option key={e.id} value={e.id}>
+                    {e.subCategoryName}
+                  </Option>
+                ))
+              : null}
+          </Select>
+          <button type="submit">Save</button>
+        </form>
+      </Modal>
+
       <table className="overflow-x-auto w-full">
         <thead className="">
           <tr className=" border-b-2 border-gray-300 ">
@@ -139,8 +352,14 @@ const Products = () => {
                 <td className="p-3 font-semibold">{e.categoryName}</td>
                 <td className="p-3 font-semibold">{e.price}</td>
                 <td className="flex items-center gap-5 p-3 text-lg">
-                  <FaPen className="text-blue-500" />
-                  <FaTrashAlt className="text-red-500" />
+                  <FaPen
+                    onClick={() => openEditDialog(e)}
+                    className="text-blue-600 hover:text-blue-500 cursor-pointer"
+                  />
+                  <FaTrashAlt
+                    className="text-red-600 hover:text-red-500 cursor-pointer"
+                    onClick={() => removeProduct(e.id)}
+                  />
                 </td>
               </tr>
             ))
