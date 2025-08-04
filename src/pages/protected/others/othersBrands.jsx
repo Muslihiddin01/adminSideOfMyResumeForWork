@@ -23,6 +23,10 @@ const OtherBrands = () => {
 
   let [editBrand] = useEditBrandMutation();
 
+  let [isActive, setActive] = useState("brands");
+
+  let [inpSearch, setInpSearch] = useState("");
+
   async function removeCategory(id) {
     try {
       await deleteBrand(id);
@@ -89,6 +93,38 @@ const OtherBrands = () => {
     );
   return (
     <div className="min-h-screen">
+      <section className="grid grid-cols-3 gap-5 md:max-w-1/2 mb-5">
+        <Link to={"/otherCategory"}>
+          <button
+            onClick={() => setActive("category")}
+            className={`py-2 bg-gray-200 rounded hover:bg-gray-400 transition-colors delay-75 cursor-pointer w-full ${
+              isActive == "category" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            Category
+          </button>
+        </Link>
+        <Link to={"/otherBrands"}>
+          <button
+            onClick={() => setActive("brands")}
+            className={`py-2 bg-gray-200 rounded w-full hover:bg-gray-400 transition-colors delay-75 cursor-pointer ${
+              isActive == "brands" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            Brands
+          </button>
+        </Link>
+        <Link to={"/otherSubcategory"}>
+          <button
+            onClick={() => setActive("subcategory")}
+            className={`py-2 bg-gray-200 rounded w-full cursor-pointer hover:bg-gray-400 transition-colors delay-75 cursor-pointe ${
+              isActive == "subcategory" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            SubCategory
+          </button>
+        </Link>
+      </section>
       <header className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold">Brands</h2>
         <div className="flex items-center space-x-4">
@@ -121,6 +157,8 @@ const OtherBrands = () => {
             <input
               type="text"
               placeholder="Search..."
+              value={inpSearch}
+              onChange={(e) => setInpSearch(e.target.value)}
               aria-label="Search orders"
               className="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -215,24 +253,28 @@ const OtherBrands = () => {
 
       <main className="grid md:grid-cols-5 grid-cols-2 gap-5 mt-7">
         {brand ? (
-          brand.map((e) => (
-            <article
-              key={e.id}
-              className="p-3 border-1 border-[#0000004D] h-20 rounded flex flex-col items-center gap-1 relative"
-            >
-              <h2>{e.brandName}</h2>
-              <div className="absolute right-3 bottom-3 text-[22px] flex items-center gap-3">
-                <RiEdit2Line
-                  onClick={() => openEditDialog(e)}
-                  className="text-blue-600 hover:text-blue-500 cursor-pointer"
-                />
-                <GoTrash
-                  onClick={() => removeCategory(e.id)}
-                  className="text-red-600 hover:text-red-500 cursor-pointer"
-                />
-              </div>
-            </article>
-          ))
+          brand
+            .filter((search) =>
+              search.brandName.toLowerCase().includes(inpSearch.toLowerCase())
+            )
+            .map((e) => (
+              <article
+                key={e.id}
+                className="p-3 border-1 border-[#0000004D] h-20 rounded flex flex-col items-center gap-1 relative"
+              >
+                <h2>{e.brandName}</h2>
+                <div className="absolute right-3 bottom-3 text-[22px] flex items-center gap-3">
+                  <RiEdit2Line
+                    onClick={() => openEditDialog(e)}
+                    className="text-blue-600 hover:text-blue-500 cursor-pointer"
+                  />
+                  <GoTrash
+                    onClick={() => removeCategory(e.id)}
+                    className="text-red-600 hover:text-red-500 cursor-pointer"
+                  />
+                </div>
+              </article>
+            ))
         ) : (
           <article>
             <p className="text-red-600">Something went wrong</p>

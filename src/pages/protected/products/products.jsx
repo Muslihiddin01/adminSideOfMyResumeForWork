@@ -34,6 +34,8 @@ const Products = () => {
     }
   }
 
+  let [inpSearch, setInpSearch] = useState("");
+
   let [inpEditBrand, setInpEditBrand] = useState(null);
   let [inpEditColor, setInpEditColor] = useState(null);
   let [inpEditProductName, setInpEditProductName] = useState("");
@@ -96,11 +98,13 @@ const Products = () => {
         SubCategoryId: inpEditSubCategoryId,
       });
       refetch();
-      setIsModalOpen(false)
+      setIsModalOpen(false);
     } catch (error) {
       console.error(error);
     }
   }
+
+  console.log(inpEditSubCategoryId);
 
   if (isLoading)
     return (
@@ -110,7 +114,7 @@ const Products = () => {
     );
 
   return (
-    <div className="min-h-screen p-6 font-sans">
+    <div className="min-h-screen p-6 font-sans overflow-hidden">
       <header className="flex items-center justify-between mb-6">
         <h2 className="text-3xl font-bold">Products</h2>
         <div className="flex items-center space-x-4">
@@ -140,6 +144,8 @@ const Products = () => {
         <div className="flex items-center space-x-4">
           <div className="relative flex-grow">
             <input
+              value={inpSearch}
+              onChange={(e) => setInpSearch(e.target.value)}
               type="text"
               placeholder="Search..."
               aria-label="Search orders"
@@ -309,67 +315,75 @@ const Products = () => {
         </form>
       </Modal>
 
-      <table className="overflow-x-auto w-full">
-        <thead className="">
-          <tr className=" border-b-2 border-gray-300 ">
-            <th className="font-normal text-start  gap-3 p-3 flex items-center">
-              <Checkbox /> Product
-            </th>
-            <th className="font-normal text-start  gap-3 p-3">Inventory</th>
-            <th className="font-normal text-start  gap-3 p-3">Category</th>
-            <th className="font-normal text-start  gap-3 p-3">Price</th>
-            <th className="font-normal text-start  gap-3 p-3">Action</th>
-          </tr>
-        </thead>
-        <tbody className=" ">
-          {product ? (
-            product.map((e) => (
-              <tr
-                key={e.id}
-                className="border-b-[1.5px] border-gray-300 w-full p-3 "
-              >
-                <td className="flex items-center gap-3 text-sm font-semibold p-3">
-                  <Checkbox />
-                  <img
-                    className="w-14 h-14 rounded-full"
-                    src={`https://store-api.softclub.tj/images/${e.image}`}
-                    alt={e.productName}
-                  />
-                  <span>{e.productName}</span>
-                </td>
-
-                <td>
-                  <span
-                    className={
-                      e.quantity > 0
-                        ? "bg-green-500 text-white py-2 px-5 rounded-full p-3"
-                        : "bg-red-500 text-white py-2 px-4 rounded-full p-3"
-                    }
-                  >
-                    {e.quantity > 0 ? "In Stock" : "Out of Stock"}
-                  </span>
-                </td>
-                <td className="p-3 font-semibold">{e.categoryName}</td>
-                <td className="p-3 font-semibold">{e.price}</td>
-                <td className="flex items-center gap-5 p-3 text-lg">
-                  <FaPen
-                    onClick={() => openEditDialog(e)}
-                    className="text-blue-600 hover:text-blue-500 cursor-pointer"
-                  />
-                  <FaTrashAlt
-                    className="text-red-600 hover:text-red-500 cursor-pointer"
-                    onClick={() => removeProduct(e.id)}
-                  />
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td className="p-3 text-red-600">Something went wrong</td>
+      <div className="overflow-auto">
+        <table className="w-full min-w-xl">
+          <thead className="">
+            <tr className=" border-b-2 border-gray-300 ">
+              <th className="font-normal text-start  gap-3 p-3 flex items-center">
+                <Checkbox /> Product
+              </th>
+              <th className="font-normal text-start  gap-3 p-3">Inventory</th>
+              <th className="font-normal text-start  gap-3 p-3">Category</th>
+              <th className="font-normal text-start  gap-3 p-3">Price</th>
+              <th className="font-normal text-start  gap-3 p-3">Action</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className=" ">
+            {product ? (
+              product
+                .filter((search) =>
+                  search.productName
+                    .toLowerCase()
+                    .includes(inpSearch.toLowerCase())
+                )
+                .map((e) => (
+                  <tr
+                    key={e.id}
+                    className="border-b-[1.5px] border-gray-300 w-full p-3 "
+                  >
+                    <td className="flex items-center gap-3 text-sm font-semibold p-3">
+                      <Checkbox />
+                      <img
+                        className="w-14 h-14 rounded-full"
+                        src={`https://store-api.softclub.tj/images/${e.image}`}
+                        alt={e.productName}
+                      />
+                      <span>{e.productName}</span>
+                    </td>
+
+                    <td>
+                      <span
+                        className={
+                          e.quantity > 0
+                            ? "md:bg-green-500 md:text-white py-2 px-5 rounded-full p-3"
+                            : "md:bg-red-500 md:text-white py-2 px-4 rounded-full p-3"
+                        }
+                      >
+                        {e.quantity > 0 ? "In Stock" : "Out of Stock"}
+                      </span>
+                    </td>
+                    <td className="p-3 font-semibold">{e.categoryName}</td>
+                    <td className="p-3 font-semibold">{e.price}</td>
+                    <td className="flex items-center gap-5 p-3 text-lg">
+                      <FaPen
+                        onClick={() => openEditDialog(e)}
+                        className="text-blue-600 hover:text-blue-500 cursor-pointer"
+                      />
+                      <FaTrashAlt
+                        className="text-red-600 hover:text-red-500 cursor-pointer"
+                        onClick={() => removeProduct(e.id)}
+                      />
+                    </td>
+                  </tr>
+                ))
+            ) : (
+              <tr>
+                <td className="p-3 text-red-600">Something went wrong</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

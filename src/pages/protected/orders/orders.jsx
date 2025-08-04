@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Orders = () => {
   const orders = [
@@ -103,6 +103,8 @@ const Orders = () => {
     },
   ];
 
+  let [inpSearch, setInpSearch] = useState("");
+
   return (
     <main className="min-h-screen p-6 font-sans">
       <header className="flex items-center justify-between mb-6">
@@ -171,6 +173,8 @@ const Orders = () => {
           <div className="relative flex-grow">
             <input
               type="text"
+              value={inpSearch}
+              onChange={(e) => setInpSearch(e.target.value)}
               placeholder="Search..."
               aria-label="Search orders"
               className="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -240,47 +244,51 @@ const Orders = () => {
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr key={order.id} className="border-b hover:opacity-90">
-                <td className="px-4 py-3">
-                  <input
-                    type="checkbox"
-                    checked={order.selected}
-                    aria-label={`Select order ${order.id}`}
-                    className="w-5 h-5"
-                    readOnly
-                  />
-                </td>
-                <td className="px-4 py-3 font-medium">{order.id}</td>
-                <td className="px-4 py-3">{order.date}</td>
-                <td className="px-4 py-3">{order.customer}</td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`inline-flex px-3 py-1 text-center rounded-full font-medium ${
-                      order.paymentStatus === "Paid"
-                        ? "bg-green-200 text-green-800"
-                        : "bg-yellow-200 text-yellow-800"
-                    }`}
-                  >
-                    {order.paymentStatus}
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <span
-                    className={`inline-flex px-3 py-1 text-center rounded-full font-medium ${
-                      order.orderStatus === "Ready"
-                        ? "bg-yellow-200 text-yellow-800"
-                        : order.orderStatus === "Shipped"
-                        ? "bg-blue-200 text-blue-800"
-                        : "bg-purple-200 text-purple-800"
-                    }`}
-                  >
-                    {order.orderStatus}
-                  </span>
-                </td>
-                <td className="px-4 py-3 font-medium">{order.total}</td>
-              </tr>
-            ))}
+            {orders
+              .filter((search) =>
+                search.customer.toLowerCase().includes(inpSearch.toLowerCase())
+              )
+              .map((order) => (
+                <tr key={order.id} className="border-b hover:opacity-90">
+                  <td className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={order.selected}
+                      aria-label={`Select order ${order.id}`}
+                      className="w-5 h-5"
+                      readOnly
+                    />
+                  </td>
+                  <td className="px-4 py-3 font-medium">{order.id}</td>
+                  <td className="px-4 py-3">{order.date}</td>
+                  <td className="px-4 py-3">{order.customer}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex px-3 py-1 text-center rounded-full font-medium ${
+                        order.paymentStatus === "Paid"
+                          ? "bg-green-200 text-green-800"
+                          : "bg-yellow-200 text-yellow-800"
+                      }`}
+                    >
+                      {order.paymentStatus}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex px-3 py-1 text-center rounded-full font-medium ${
+                        order.orderStatus === "Ready"
+                          ? "bg-yellow-200 text-yellow-800"
+                          : order.orderStatus === "Shipped"
+                          ? "bg-blue-200 text-blue-800"
+                          : "bg-purple-200 text-purple-800"
+                      }`}
+                    >
+                      {order.orderStatus}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 font-medium">{order.total}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

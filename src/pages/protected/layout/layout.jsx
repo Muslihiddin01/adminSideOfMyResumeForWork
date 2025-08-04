@@ -9,7 +9,7 @@ import logo from "../../../shared/images/logo.png";
 import { Switch } from "antd";
 
 const Layout = () => {
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("home");
   const [isAsideOpen, setIsAsideOpen] = useState(true);
 
   const onChange = (checked) => {
@@ -17,9 +17,9 @@ const Layout = () => {
   };
 
   return (
-    <div className="max-w-[1300px] mx-auto p-5">
+    <div className="w-[100%] max-w-[2000px] overflow-auto">
       <header>
-        <nav className="bg-[#1C2536] p-3 flex items-center justify-between text-white">
+        <nav className="bg-[#1C2536] p-3 flex items-center min-w-screen z-[2000] fixed top-0 justify-between text-white">
           <article className="flex items-center md:gap-20">
             <img src={logo} alt="logo" />
             <div className="w-1/4 flex items-center py-2 px-3 gap-3">
@@ -41,19 +41,19 @@ const Layout = () => {
         </nav>
       </header>
 
-      <main className="flex flex-col md:flex-row ">
+      <main className="flex ">
         <aside
           className={`${
-            isAsideOpen ? "md:w-[20%] w-full" : "w-[100px]"
-          } bg-[#1C2536] text-white  transition-all  duration-1000 relative`}
+            isAsideOpen ? "md:w-[20%] w-[90%]" : "w-[0px]"
+          } bg-[#1C2536] text-white  transition-all z-[2000] top-[55px] min-h-screen  duration-1000 fixed`}
         >
           <Switch
-            className={`absolute top-1 p-1 !transition-all !duration-900  ${
-              isAsideOpen ? " -right-[80%]" : "-right-10"
+            className={`absolute top-1 p-1 !transition-all !duration-1000  ${
+              isAsideOpen ? " -right-[80%]" : "right-0"
             }`}
             onClick={() => setIsAsideOpen(!isAsideOpen)}
-            defaultChecked
-            onChange={onChange}
+            checked={isAsideOpen}
+            onChange={(checked) => setIsAsideOpen(checked)}
           />
 
           <div
@@ -63,7 +63,7 @@ const Layout = () => {
           >
             <Link
               to={"/"}
-              onClick={() => setActive("home")}
+              onClick={() => (setActive("home"), setIsAsideOpen(false))}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "home"
                   ? "bg-white text-[#1C2536]"
@@ -76,7 +76,7 @@ const Layout = () => {
 
             <Link
               to={"/orders"}
-              onClick={() => setActive("orders")}
+              onClick={() => (setActive("orders"), setIsAsideOpen(false))}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "orders"
                   ? "bg-white text-[#1C2536]"
@@ -89,7 +89,7 @@ const Layout = () => {
 
             <Link
               to={"/products"}
-              onClick={() => setActive("products")}
+              onClick={() => (setActive("products"), setIsAsideOpen(false))}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "products"
                   ? "bg-white text-[#1C2536]"
@@ -102,7 +102,7 @@ const Layout = () => {
 
             <Link
               to={"/otherCategory"}
-              onClick={() => setActive("other")}
+              onClick={() => (setActive("other"), setIsAsideOpen(false))}
               className={`p-3 rounded cursor-pointer flex items-center gap-3 transition-all ${
                 active === "other"
                   ? "bg-white text-[#1C2536]"
@@ -115,7 +115,7 @@ const Layout = () => {
           </div>
         </aside>
 
-        <section className="flex-1 pt-5 pl-5 ">
+        <section className="flex-1 mt-20 p-3 ">
           <Outlet />
         </section>
       </main>

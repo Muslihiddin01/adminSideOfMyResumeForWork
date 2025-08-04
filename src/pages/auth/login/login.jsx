@@ -28,7 +28,7 @@ const Login = () => {
   }
   return (
     <div className="max-w-[1300px] mx-auto p-5 grid md:grid-cols-2 h-[100vh]">
-      <aside className="bg-[#1C2536] text-white flex flex-col justify-center md:px-20">
+      <aside className="bg-[#1C2536] text-white flex flex-col justify-center md:px-20 px-10">
         <h2 className="text-xl">Welcome to admin panel</h2>
         <img src={logo} className="w-[60%] " alt="logo" />
       </aside>

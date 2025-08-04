@@ -3,6 +3,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Flex, Spin } from "antd";
 import homeImage from "../../../shared/images/homeImage.png";
 import homeImage2 from "../../../shared/images/homeImage2.png";
+import SalesRevenueChart from "../../../shared/salesRevenueChart";
 const Home = () => {
   return (
     <div className="space-y-6">
@@ -21,11 +22,13 @@ const Home = () => {
         </article>
         <article className="rounded  col-span-2 ">
           <div className=" rounded flex items-center justify-center h-full">
-            <img src={homeImage} className="w-full h-full" alt="homeImage" />
+            <div className=" w-full bg-[#0f1115] p-10">
+              <SalesRevenueChart />
+            </div>
           </div>
         </article>
 
-        <main className="rounded p-4 border-1 border-gray-300">
+        <main className="rounded p-4 border-1 col-span-2 md:col-span-1 border-gray-300">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">Top Selling Products</h3>
             <button className="hover:underline">See All</button>
@@ -51,7 +54,6 @@ const Home = () => {
       </section>
 
       <main className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
         <div className="rounded p-4 border border-gray-300">
           <h3 className="text-lg font-semibold mb-4">Recent Transactions</h3>
           <table className="w-full text-sm">

@@ -9,8 +9,9 @@ import {
 } from "../../../features/userApi";
 import { RiEdit2Line } from "react-icons/ri";
 import { GoTrash } from "react-icons/go";
-import { Flex, Modal, Select, Spin } from "antd";
+import { Flex, Modal, Pagination, Select, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { Link } from "react-router";
 
 const OtherSubcategory = () => {
   const {
@@ -18,6 +19,8 @@ const OtherSubcategory = () => {
     refetch,
     isLoading,
   } = useGetSubcategoriesQuery();
+
+  let [isActive, setActive] = useState("subcategory");
 
   let subcategory = subcategories?.data;
 
@@ -98,6 +101,8 @@ const OtherSubcategory = () => {
     }
   }
 
+  let [inpSearch, setInpSearch] = useState("");
+
   if (isLoading)
     return (
       <Flex className="flex items-center justify-center h-[90vh]">
@@ -106,6 +111,38 @@ const OtherSubcategory = () => {
     );
   return (
     <div className="min-h-screen">
+      <section className="grid grid-cols-3 gap-5 md:max-w-1/2 mb-5">
+        <Link to={"/otherCategory"}>
+          <button
+            onClick={() => setActive("category")}
+            className={`py-2 bg-gray-200 rounded hover:bg-gray-400 transition-colors delay-75 cursor-pointer w-full ${
+              isActive == "category" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            Category
+          </button>
+        </Link>
+        <Link to={"/otherBrands"}>
+          <button
+            onClick={() => setActive("brands")}
+            className={`py-2 bg-gray-200 rounded w-full hover:bg-gray-400 transition-colors delay-75 cursor-pointer ${
+              isActive == "brands" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            Brands
+          </button>
+        </Link>
+        <Link to={"/otherSubcategory"}>
+          <button
+            onClick={() => setActive("subcategory")}
+            className={`py-2 bg-gray-200 rounded cursor-pointer w-full hover:bg-gray-400 transition-colors delay-75 cursor-pointe ${
+              isActive == "subcategory" ? "bg-gray-400" : "bg-gray-200"
+            }`}
+          >
+            SubCategory
+          </button>
+        </Link>
+      </section>
       <header className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold">SubCategory</h2>
         <div className="flex items-center space-x-4">
@@ -138,6 +175,8 @@ const OtherSubcategory = () => {
             <input
               type="text"
               placeholder="Search..."
+              value={inpSearch}
+              onChange={(e) => setInpSearch(e.target.value)}
               aria-label="Search orders"
               className="w-full py-2 pl-10 pr-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -260,24 +299,28 @@ const OtherSubcategory = () => {
 
       <main className="grid md:grid-cols-5 grid-cols-2 gap-5 mt-7">
         {subcategory ? (
-          subcategory.map((e) => (
-            <article
-              key={e.id}
-              className="p-3 border-1 border-[#0000004D] h-20 rounded flex flex-col items-center gap-1 relative"
-            >
-              <h2>{e.subCategoryName}</h2>
-              <div className="absolute right-3 bottom-3 text-[22px] flex items-center gap-3">
-                <RiEdit2Line
-                  onClick={() => openEditDialog(e)}
-                  className="text-blue-600 hover:text-blue-500 cursor-pointer"
-                />
-                <GoTrash
-                  onClick={() => removeSubcategory(e.id)}
-                  className="text-red-600 hover:text-red-500 cursor-pointer"
-                />
-              </div>
-            </article>
-          ))
+          subcategory
+            .filter((search) =>
+              search.subCategoryName.toLowerCase().includes(inpSearch.toLowerCase())
+            )
+            .map((e) => (
+              <article
+                key={e.id}
+                className="p-3 border-1 border-[#0000004D] h-20 rounded flex flex-col items-center gap-1 relative"
+              >
+                <h2>{e.subCategoryName}</h2>
+                <div className="absolute right-3 bottom-3 text-[22px] flex items-center gap-3">
+                  <RiEdit2Line
+                    onClick={() => openEditDialog(e)}
+                    className="text-blue-600 hover:text-blue-500 cursor-pointer"
+                  />
+                  <GoTrash
+                    onClick={() => removeSubcategory(e.id)}
+                    className="text-red-600 hover:text-red-500 cursor-pointer"
+                  />
+                </div>
+              </article>
+            ))
         ) : (
           <article>
             <p className="text-red-600">Something went wrong</p>

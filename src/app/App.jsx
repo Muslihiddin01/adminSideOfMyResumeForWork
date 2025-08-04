@@ -11,7 +11,7 @@ import OtherBrands from "../pages/protected/others/othersBrands";
 import OtherSubcategory from "../pages/protected/others/otherSubcategory";
 const App = () => {
   const isAuthenticated = () => {
-    return !!localStorage.getItem("access_token");
+    return !!localStorage.getItem("token");
   };
 
   const PrivateRoute = ({ children }) => {
