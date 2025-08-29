@@ -8,7 +8,7 @@ import {
   useGetSubcategoriesQuery,
 } from "../../../features/userApi";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Checkbox, Flex, Spin, Modal, Select } from "antd";
+import { Checkbox, Flex, Spin, Modal, Select, Button } from "antd";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaPen } from "react-icons/fa6";
 import { Link } from "react-router";
@@ -202,6 +202,7 @@ const Products = () => {
         open={isModalOpen}
         onOk={handleCancel}
         onCancel={handleCancel}
+        footer={null}
       >
         <form className="grid grid-cols-2 gap-5" onSubmit={editProduct}>
           <Select
@@ -294,7 +295,7 @@ const Products = () => {
               onChange={(e) => setInpEditDiscountPrice(e.target.value)}
               type="number"
               placeholder="Discount Price"
-              className="p-2 border border-gray-300 rounded outline-none"
+              className="p-1 border border-gray-300 rounded outline-none"
             />
           )}
           <Select
@@ -311,7 +312,7 @@ const Products = () => {
                 ))
               : null}
           </Select>
-          <button type="submit">Save</button>
+          <Button className="col-span-2" type="primary">Save</Button>
         </form>
       </Modal>
 
@@ -363,7 +364,7 @@ const Products = () => {
                       </span>
                     </td>
                     <td className="p-3 font-semibold">{e.categoryName}</td>
-                    <td className="p-3 font-semibold">{e.price}</td>
+                    <td className="p-3 font-semibold">${e.price}</td>
                     <td className="flex items-center gap-5 p-3 text-lg">
                       <FaPen
                         onClick={() => openEditDialog(e)}

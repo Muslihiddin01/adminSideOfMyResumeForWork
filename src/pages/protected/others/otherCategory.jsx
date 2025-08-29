@@ -287,7 +287,7 @@ const OtherCategory = () => {
               >
                 <img
                   className="w-full h-[150px]"
-                  loading="lazy"
+                  
                   src={`https://store-api.softclub.tj/images/${e.categoryImage}`}
                   alt={e.categoryName}
                 />

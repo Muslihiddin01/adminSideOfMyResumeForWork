@@ -10,7 +10,7 @@ import { Switch } from "antd";
 
 const Layout = () => {
   const [active, setActive] = useState("home");
-  const [isAsideOpen, setIsAsideOpen] = useState(true);
+  const [isAsideOpen, setIsAsideOpen] = useState(false);
 
   const onChange = (checked) => {
     console.log(`switch to ${checked}`);
